@@ -42,3 +42,26 @@ gem 'jbuilder', '~> 1.2'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+gem 'bootstrap-sass', '~> 2.3.2.2'
+gem 'cancan'
+gem 'devise'
+gem 'figaro'
+gem 'rolify'
+gem 'simple_form', '>= 3.0.0.rc'
+
+group :development do
+  gem 'hub', :require=>nil
+  gem 'rails_layout'
+end
+
+group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'database_cleaner', '1.0.1'
+  gem 'email_spec'
+end
+

@@ -1,4 +1,4 @@
-Rubyblog
+Ruby-Blog
 ========================
 
 This application was generated with the rails_apps_composer gem:

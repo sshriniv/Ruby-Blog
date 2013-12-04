@@ -14,6 +14,10 @@ gem 'devise'
 gem 'figaro'
 gem 'rolify'
 gem 'simple_form', '>= 3.0.0.rc'
+gem 'letter_opener'
+gem 'twitter-bootstrap-rails'
+gem 'therubyracer'
+gem 'less-rails'
 group :development do
   gem 'hub', :require=>nil
   gem 'rails_layout'

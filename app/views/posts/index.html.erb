@@ -1,0 +1,87 @@
+<%- model_class = Post -%>
+
+<% @posts.each do |post|%>
+ <div class = "row">
+  <div class = "span9"><h2><%= post.title %></h2></div>
+  <div class = "span3"><h3><%=l post.publish_date, :format=> :long %></h3></div>
+  <div class = "span8">Author: <%= link_to post.user.name, edit_user_registration_path %></div>
+</div>
+
+ <div class = "row">
+  <div class = "span4">Categories:
+    <% post.categories.each do |category| %>
+    <%= category.name %>
+    <% end %>
+  </div>
+ </div>
+
+ <br/>
+
+ <!--Use simple_format to render line breaks -->
+ <%=simple_format(post.body, {}, :sanitize => false)%>
+
+
+ <% if current_user && (current_user.has_role?(:admin) || current_user.id  == post.user_id) %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_post_path(post), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      post_path(post),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+
+ <% end %>
+
+</br>
+</br>
+
+
+<!-- Display Comments-->
+<div class = "row">
+   <div class = "span8"><b>Comments:</b></div>
+   </br>
+   </br>
+   <% post.comments.each do |comment|%>
+      <div class = "span8"><%= link_to comment.user.name, edit_user_registration_path %><%=' says...'%></div>
+      </br>
+      <div class = "span8"><%= comment.comment%></div>
+      </br></br>
+      <div class = "span10"><%= l comment.comment_date, :format=> :long%></div>
+
+      <% if user_signed_in? %>
+        <%if current_user.name.eql? comment.user.name %>
+           <div class = "span2">
+              <%= link_to "Delete Comment", comment, :confirm => "Are you sre you want to delete this comment?", :method => :delete %>
+           </div> 
+        <%end%>
+      <%end%>
+
+      <hr>
+      </br>
+
+   <%end%>
+</div>
+
+</br>
+
+<!-- Form to add comments -->
+<!-- Clicking the submit button on this form automatically transfers control over to the 'create' method on Comment controller because of the '@comment' in simple_form_for-->
+<%= simple_form_for @comment do |f| %>
+  <div class = "row"><div class = "span8"><%= f.input :post_id ,:as=> :hidden, :input_html => {:value => post.id} %></div></div>
+  <div class = "row"><div class = "span8"><%= f.input :comment, label:'Add Comment' %></div></div>
+  <%= f.button :submit, :class => 'btn-primary' %>
+<% end %>
+
+ <!--here -->
+      
+ <hr />     
+
+<% end %>
+
+
+<!-- Show 'New' button only if user is signed in -->
+<% if user_signed_in? %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_post_path,
+            :class => 'btn btn-primary' %>
+<% end %>

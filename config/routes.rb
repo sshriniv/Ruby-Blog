@@ -1,5 +1,11 @@
 Rubyblog::Application.routes.draw do
-  root :to => "home#index"
+  resources :categories
+
+  resources :posts
+
+  resources :comments
+
+  root :to => "posts#index"
   devise_for :users, :controllers => {:registrations => "registrations"}
   resources :users
 end
